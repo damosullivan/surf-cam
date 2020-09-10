@@ -1,43 +1,70 @@
-from time import sleep
-
+import time
 import cv2
+import os
+import boto3
+import tempfile
+
+VIDEO_CAPTURE_ID = 0
+BUCKET = "farranahown"
 
 class SurfCam(object):
-    VIDEO_CAPTURE_ID = 0
 
-    def __init__(self, frequency=10, ):
+    def __init__(self, frequency=10):
         self.frequency = frequency
+        self.image_directory = tempfile.mkdtemp()
+
+        print("boto")
+        
+        self.s3_client = boto3.client('s3')
+
+        print("cam")
+
         self.cam = cv2.VideoCapture(VIDEO_CAPTURE_ID)
+
+        print("init")
 
     def run(self):
 
         # setup, verify credentials, log?
+        print("start")
 
-        try:
-            while True:
+        # try:
+        # while True:
 
-                image_name = self.captureImage()
+        print("go")
+        image_name = self.captureImage()
+        # self.uploadImage(image_name)
 
-                # store image
+        # store image
 
-                # compress image
+        # compress image
 
-                # upload image
+        # upload image
 
-                sleep(self.frequency)
+        time.sleep(self.frequency)
             
-        except KeyboardInterrupt:
-            print("Killed!")
-        finally:
-            cv2.VideoCapture(self.VIDEO_CAPTURE_ID).release()
+        # except KeyboardInterrupt:
+        #     print("Killed!")
+        # finally:
+        #     cv2.VideoCapture(VIDEO_CAPTURE_ID).release()
 
         # terminated
 
     def captureImage(self):
-        name = "test"
-        s, im = self.cam.read()
-        cv2.imwrite("{}.jpeg".format(name), im)
-        return name
+        filename = "{}.jpeg".format(str(time.time()).split('.')[0])
+        file_path = os.path.join(self.image_directory, filename)
+        s, image = self.cam.read()
+        cv2.imwrite(file_path, image)
+
+        print("Captured: {}".format(file_path))
+        
+        return filename
+
+    def uploadImage(self, filename):
+        file_path = os.path.join(self.image_directory, filename)
+        self.s3_client.upload_file(file_path, BUCKET, filename)
+
+        print("Uploaded: {}".format(filename))
 
 
     def verifyAWS(self):
