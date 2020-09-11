@@ -4,6 +4,9 @@ import os
 import boto3
 import tempfile
 
+from PIL import Image
+
+
 VIDEO_CAPTURE_ID = 0
 BUCKET = "farranahown"
 
@@ -25,11 +28,12 @@ class SurfCam(object):
 
             print("Processing: {}".format(image_name))
 
-            # compress image
+            compressed_image = self.compressImage(image_name)
 
-            self.uploadFileToS3(image_name)
+            self.uploadFileToS3(compressed_image)
 
             self.deleteFile(image_name)
+            self.deleteFile(compressed_image)
 
             time.sleep(self.frequency)
             
@@ -55,6 +59,15 @@ class SurfCam(object):
 
     def getAbsoluteTempPath(self, filename):
         return os.path.join(self.image_directory, filename)
+
+    def compressImage(self, filename):
+        infile = self.getAbsoluteTempPath(filename)
+        outfile = self.getAbsoluteTempPath(filename.split('.')[0]) + '.jpeg'
+        with Image.open(infile) as im:
+            im = im.resize((800, 600),Image.LANCZOS)
+            im.save(outfile, "jpeg", quality=25, optimize=True)
+
+        return os.path.basename(outfile)
 
     def verifyFilePermissions(self):
         filename = "connection.txt"
