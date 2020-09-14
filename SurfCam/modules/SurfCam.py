@@ -47,7 +47,7 @@ class SurfCam(object):
 
     def uploadFileToS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
-        self.s3_client.upload_file(file_path, BUCKET, filename)
+        self.s3_client.upload_file(file_path, BUCKET, filename, ExtraArgs={'ACL':'public-read'})
 
     def deleteFileOnS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
