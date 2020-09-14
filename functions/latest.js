@@ -13,7 +13,8 @@ exports.handler = async (event, context) => {
 
   return s3ListObject(s3, params)
     .then((data) => {
-      let latest = data.Contents[0].Key;
+      console.log(data);
+      let latest = data.Contents[0];
       return {
         statusCode: 200,
         body: latest,
