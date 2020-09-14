@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
       let latest = data.Contents[0];
       return {
         statusCode: 200,
-        body: latest,
+        body: JSON.stringify(latest),
       };
     })
     .catch((err) => {

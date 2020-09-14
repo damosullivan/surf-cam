@@ -17,5 +17,5 @@
 
 [[redirects]]
   from = "/image"
-  to = "/.netlify/functions/recent"
+  to = "/.netlify/functions/latest"
   status = 200
