@@ -31,6 +31,7 @@ class SurfCam(object):
             compressed_image = self.compressImage(image_name)
 
             self.uploadFileToS3(compressed_image)
+            self.updateLatestTracker(compressed_image)
 
             self.deleteFile(image_name)
             self.deleteFile(compressed_image)
@@ -48,6 +49,10 @@ class SurfCam(object):
     def uploadFileToS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
         self.s3_client.upload_file(file_path, BUCKET, filename, ExtraArgs={'ACL':'public-read'})
+
+    def updateLatestTracker(self, latest):
+        key = "latest"
+        self.s3_client.put_object(Bucket=BUCKET, Key=key, ACL='public-read', Body=latest)
 
     def deleteFileOnS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
