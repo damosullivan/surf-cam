@@ -10,4 +10,8 @@ const updateImage = async () => {
     .catch((err) => alert(err));
 };
 
-document.addEventListener("DOMContentLoaded", updateImage);
+const setImageRefresh = () => {
+  setInterval(updateImage, 1000);
+};
+
+document.addEventListener("DOMContentLoaded", setImageRefresh);
