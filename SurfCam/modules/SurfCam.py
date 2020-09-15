@@ -12,7 +12,7 @@ BUCKET = "farranahown"
 
 class SurfCam(object):
 
-    def __init__(self, frequency=10):
+    def __init__(self, frequency=1):
         self.frequency = frequency
         
         self.s3_client = boto3.client('s3')
