@@ -52,7 +52,7 @@ class SurfCam(object):
 
     def updateLatestTracker(self, latest):
         key = "latest"
-        self.s3_client.put_object(Bucket=BUCKET, Key=key, ACL='public-read', Body=latest)
+        self.s3_client.put_object(Bucket=BUCKET, Key=key, ACL='public-read', Body=latest, ContentType='text/plain')
 
     def deleteFileOnS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
