@@ -30,7 +30,7 @@ class SurfCam(object):
 
             compressed_image = self.compressImage(image_name)
 
-            self.uploadFileToS3(compressed_image)
+            self.uploadImageToS3(compressed_image)
             self.updateLatestTracker(compressed_image)
 
             self.deleteFile(image_name)
@@ -46,9 +46,9 @@ class SurfCam(object):
         
         return filename
 
-    def uploadFileToS3(self, filename):
+    def uploadImageToS3(self, filename):
         file_path = self.getAbsoluteTempPath(filename)
-        self.s3_client.upload_file(file_path, BUCKET, filename, ExtraArgs={'ACL':'public-read'})
+        self.s3_client.upload_file(file_path, BUCKET, filename, ExtraArgs={'ACL':'public-read', "ContentType": "image/jpeg"})
 
     def updateLatestTracker(self, latest):
         key = "latest"
@@ -79,7 +79,7 @@ class SurfCam(object):
         with open(self.getAbsoluteTempPath(filename), 'w') as f:
             f.write("Verifying required S3 access")
 
-        self.uploadFileToS3(filename)
+        self.uploadImageToS3(filename)
         self.deleteFileOnS3(filename)
         self.deleteFile(filename)
 
