@@ -5,7 +5,13 @@ const updateImage = async () => {
     .then((data) => data.text())
     .then((image) => {
       let viewfinder = document.getElementById("viewfinder");
+      let caption = document.getElementById("caption");
+
+      let d = new Date(0);
+      d.setUTCSeconds(image.split(".")[0]);
+
       viewfinder.src = IMAGE_BASE + image;
+      caption.innerText = d;
     })
     .catch((err) => alert(err));
 };
