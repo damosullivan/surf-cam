@@ -3,6 +3,7 @@ import cv2
 import os
 import boto3
 import tempfile
+import imutils
 
 from PIL import Image
 
@@ -41,7 +42,8 @@ class SurfCam(object):
     def captureImage(self):
         filename = "{}.png".format(str(time.time()).split('.')[0])
         file_path = self.getAbsoluteTempPath(filename)
-        s, image = self.cam.read()
+        _, image = self.cam.read()
+        image = imutils.resize(image, width=800)
         cv2.imwrite(file_path, image)
         
         return filename
@@ -69,7 +71,7 @@ class SurfCam(object):
         infile = self.getAbsoluteTempPath(filename)
         outfile = self.getAbsoluteTempPath(filename.split('.')[0]) + '.jpeg'
         with Image.open(infile) as im:
-            im = im.resize((800, 600),Image.LANCZOS)
+            # im = im.resize((800, 600),Image.LANCZOS)
             im.save(outfile, "jpeg", quality=25, optimize=True)
 
         return os.path.basename(outfile)
