@@ -4,19 +4,24 @@ import os
 import boto3
 import tempfile
 import imutils
+import os
 
 from PIL import Image
 
 
 VIDEO_CAPTURE_ID = 0
-BUCKET = "farranahown"
+BUCKET = "farranahown-com"
 
 class SurfCam(object):
 
     def __init__(self, frequency=1):
         self.frequency = frequency
         
-        self.s3_client = boto3.client('s3')
+        self.s3_client = boto3.client('s3',
+            endpoint_url='https://s3.us-west-000.backblazeb2.com',
+            aws_access_key_id=os.environ.get('BACKBLAZE_KEY_ID'),
+            aws_secret_access_key=os.environ.get('BACKBLAZE_APPLICATION_KEY'))
+
         self.cam = cv2.VideoCapture(VIDEO_CAPTURE_ID)
         
         self.image_directory = tempfile.mkdtemp()
@@ -72,7 +77,7 @@ class SurfCam(object):
         outfile = self.getAbsoluteTempPath(filename.split('.')[0]) + '.jpeg'
         with Image.open(infile) as im:
             # im = im.resize((800, 600),Image.LANCZOS)
-            im.save(outfile, "jpeg", quality=25, optimize=True)
+            im.save(outfile, "jpeg", quality=90, optimize=True)
 
         return os.path.basename(outfile)
 
