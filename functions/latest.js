@@ -1,14 +1,15 @@
 const S3 = require("aws-sdk/clients/s3");
-const { AWS_ACCESS_KEY_ID_RW, AWS_SECRET_ACCESS_KEY_RW } = process.env;
+const { BACKBLAZE_KEY_ID, BACKBLAZE_APPLICATION_KEY } = process.env;
 
 const s3 = new S3({
-  accessKeyId: AWS_ACCESS_KEY_ID_RW,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY_RW,
+  endpoint: "https://s3.us-west-000.backblazeb2.com",
+  accessKeyId: BACKBLAZE_KEY_ID,
+  secretAccessKey: BACKBLAZE_APPLICATION_KEY,
 });
 
 exports.handler = async (event, context) => {
   var params = {
-    Bucket: "farranahown",
+    Bucket: "farranahown-com",
   };
 
   return s3ListObject(s3, params)

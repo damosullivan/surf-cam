@@ -1,4 +1,4 @@
-const IMAGE_BASE = "https://farranahown.s3-eu-west-1.amazonaws.com/";
+const IMAGE_BASE = "https://f000.backblazeb2.com/file/farranahown-com/";
 
 const updateImage = async () => {
   return fetch(IMAGE_BASE + "latest", { cache: "no-store" })
