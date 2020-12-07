@@ -13,7 +13,11 @@ const updateImage = async () => {
       viewfinder.src = IMAGE_BASE + image;
       caption.innerText = d;
     })
-    .catch((err) => alert(err));
+    .catch((err) => {
+      let caption = document.getElementById("caption");
+      caption.innerText = err;
+      caption.style.backgroundColor = "#cc0000";
+    });
 };
 
 const setImageRefresh = () => {
