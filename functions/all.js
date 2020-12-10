@@ -14,10 +14,10 @@ exports.handler = async (event, context) => {
 
   return s3ListObject(s3, params)
     .then((data) => {
-      let latest = data.Contents[0];
+      let contents = data.Contents;
       return {
         statusCode: 200,
-        body: JSON.stringify(latest),
+        body: JSON.stringify(contents),
       };
     })
     .catch((err) => {
