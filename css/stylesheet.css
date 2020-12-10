@@ -25,15 +25,15 @@ h1 {
 } */
 
 #viewfinder {
-    width: 800px;
+    width: 100%;
 }
 
 figure {
-    border: thin #c0c0c0 solid;
+    border: thick #c0c0c0 solid;
     display: flex;
     flex-flow: column;
     align-self: center;
-    padding: 5px;
+    padding: 0;
     max-width: 800px;
     margin: auto;
 }
