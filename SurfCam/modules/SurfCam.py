@@ -30,19 +30,28 @@ class SurfCam(object):
 
         while True:
 
-            image_name = self.captureImage()
+            try:
 
-            print("Processing: {}".format(image_name))
+                image_name = self.captureImage()
 
-            compressed_image = self.compressImage(image_name)
+                print("Processing: {}".format(image_name))
 
-            self.uploadImageToS3(compressed_image)
-            self.updateLatestTracker(compressed_image)
+                compressed_image = self.compressImage(image_name)
 
-            self.deleteFile(image_name)
-            self.deleteFile(compressed_image)
+                self.uploadImageToS3(compressed_image)
+                self.updateLatestTracker(compressed_image)
 
-            time.sleep(self.frequency)
+                self.deleteFile(image_name)
+                self.deleteFile(compressed_image)
+
+                time.sleep(self.frequency)
+
+            except Exception as e:
+
+                # Basic error handling to stop crashing
+                
+                print(e)
+                time.sleep(20)
             
     def captureImage(self):
         filename = "{}.png".format(str(time.time()).split('.')[0])
